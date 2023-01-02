@@ -1,37 +1,58 @@
-# redis_course
-
-#### 介绍
-青训营redis课程Demo
-
-#### 软件架构
-软件架构说明
 
 
-#### 安装教程
+## Menu
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+### 基础库
+* ./example/common/concurrent_routine.go 示例使用的并发执行器
+* ./example/common/concurrent_event_logger.go 示例使用的日志搜集及打印工具
+* ./example/redis_client.go redis_client初始化工具
 
-#### 使用说明
+### 案例
+#### 签到案例
+* ./example/ex01_checkin.go 
+> 执行命令
+```shell
+go run main.go Ex01 1165894833417101
+```
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+#### 基于setnx的简化版分布式锁
+* ./example/ex02_setnx.go 
+> 执行命令：
+```shell
+go run main.go Ex02
+```
 
-#### 参与贡献
+#### 基于incr,decr的简单限流
+* ./example/ex03_limiter.go
+> 执行命令：
+```shell
+go run main.go Ex03
+```
 
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+#### 消息通知
+* ./example/ex04_list.go
+> 执行命令：
+```shell
+go run main.go Ex04
+```
 
+#### 用户各类计数保存
+* ./example/ex05_hash.go
+> 执行命令：
+```shell
+go run main.go Ex05 init
+go run main.go Ex05 get 1556564194374926
+go run main.go Ex05 incr_collect 1556564194374926
+go run main.go Ex05 decr_collect 1556564194374926
+```
 
-#### 特技
+#### 排行榜
+* ./example/ex06_zset.go
+> 执行命令：
+```shell
+go run main.go init # 初始化计数
+go run main.go Ex06 rev_order # 按score逆序输出排行榜
+go run main.go Ex06 get_score user2 # 获取user2的积分
+go run main.go Ex06 add_user_score user2 10 # 为用户user2增加10分
+```
 
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
