@@ -46,6 +46,10 @@ func Ex06(ctx context.Context, args []string) {
 	case "get_score":
 		GetUserScoreByName(ctx, args[1])
 	case "add_user_score":
+		if len(args) < 3 {
+			fmt.Printf("参数错误，可能是缺少需要增加的分值。eg：go run main.go  Ex06 add_user_score user2 10\n")
+			return
+		}
 		score, err := strconv.ParseFloat(args[2], 64)
 		if err != nil {
 			panic(err)
@@ -142,5 +146,5 @@ func AddUserScore(ctx context.Context, name string, score float64) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("set[%f] name=%s, score=%f\n", num, name, score)
+	fmt.Printf("name=%s, add_score=%f, score=%f\n", name, score, num)
 }

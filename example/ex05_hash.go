@@ -62,10 +62,6 @@ func Ex05(ctx context.Context, args []string) {
 }
 
 func Ex06InitUserCounter(ctx context.Context) {
-	// 清空hash
-	if err := RedisClient.Del(ctx, Ex05UserCountKey).Err(); err != nil {
-		panic(err)
-	}
 	pipe := RedisClient.Pipeline()
 	userCounters := []map[string]interface{}{
 		{"user_id": "1556564194374926", "got_digg_count": 10693, "got_view_count": 2238438, "followee_count": 176, "follower_count": 9895, "follow_collect_set_count": 0, "subscribe_tag_count": 95},
@@ -75,18 +71,24 @@ func Ex06InitUserCounter(ctx context.Context) {
 	for _, counter := range userCounters {
 		uid, err := strconv.ParseInt(counter["user_id"].(string), 10, 64)
 		key := GetUserCounterKey(uid)
+		rw, err := pipe.Del(ctx, key).Result()
+		if err != nil {
+			fmt.Printf("del %s, rw=%d\n", key, rw)
+		}
 		_, err = pipe.HMSet(ctx, key, counter).Result()
 		if err != nil {
 			panic(err)
 		}
-		_, err = pipe.Exec(ctx)
-		if err != nil { // 报错后进行一次额外尝试
-			_, err = pipe.Exec(ctx)
-			if err != nil {
-				panic(err)
-			}
-		}
+
 		fmt.Printf("设置 uid=%d, key=%s\n", uid, key)
+	}
+	// 批量执行上面for循环设置好的hmset命令
+	_, err := pipe.Exec(ctx)
+	if err != nil { // 报错后进行一次额外尝试
+		_, err = pipe.Exec(ctx)
+		if err != nil {
+			panic(err)
+		}
 	}
 }
 

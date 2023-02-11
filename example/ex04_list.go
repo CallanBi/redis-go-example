@@ -35,7 +35,7 @@ func ex04ConsumerPop(ctx context.Context, cInstParam common.CInstParams) {
 		if err != nil {
 			panic(err)
 		}
-		fmt.Println(common.LogFormat(routine, "读取文章[%d]标题、正文，发送到ES更新索引", items[1]))
+		fmt.Println(common.LogFormat(routine, "读取文章[%s]标题、正文，发送到ES更新索引", items[1]))
 		// 将文章内容推送到ES
 		time.Sleep(1 * time.Second)
 	}
