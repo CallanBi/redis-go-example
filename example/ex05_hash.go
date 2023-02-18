@@ -12,12 +12,12 @@ import (
 const Ex05UserCountKey = "ex05_user_count"
 
 // Ex05 hash数据结果的运用（参考掘金应用）
-// go run main.go init 初始化用户计数值
-// go run main.go get 1556564194374926  // 打印用户(1556564194374926)的所有计数值
-// go run main.go incr_like 1556564194374926 // 点赞数+1
-// go run main.go incr_collect 1556564194374926 // 点赞数+1
-// go run main.go decr_like 1556564194374926 // 点赞数-1
-// go run main.go decr_collect 1556564194374926 // 点赞数-1
+// go run main.go Ex05 init 初始化用户计数值
+// go run main.go  Ex05 get 1556564194374926  // 打印用户(1556564194374926)的所有计数值
+// go run main.go  Ex05 incr_like 1556564194374926 // 点赞数+1
+// go run main.go  Ex05 incr_collect 1556564194374926 // 点赞数+1
+// go run main.go  Ex05 decr_like 1556564194374926 // 点赞数-1
+// go run main.go  Ex05 decr_collect 1556564194374926 // 点赞数-1
 func Ex05(ctx context.Context, args []string) {
 	if len(args) == 0 {
 		fmt.Printf("args can NOT be empty\n")
