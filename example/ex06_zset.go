@@ -82,6 +82,7 @@ func Ex06InitUserScore(ctx context.Context) {
 // 正序输出
 // ZRANGE ex06_rank_zset 0 -1 WITHSCORES
 func GetRevOrderAllList(ctx context.Context, limit, offset int64) {
+	// zrange ex06_rank_zset 300 0 byscore rev limit 1 2 withscores // 取300分到0分之间的排名
 	resList, err := RedisClient.ZRevRangeWithScores(ctx, Ex06RankKey, 0, -1).Result()
 	if err != nil {
 		panic(err)
@@ -121,6 +122,7 @@ func GetOrderListByPage(ctx context.Context, offset, pageSize int64) {
 
 // GetUserRankByName 获取用户排名
 func GetUserRankByName(ctx context.Context, name string) {
+	// zrank ex06_rank_zset user2 // 获取user2的排名
 	rank, err := RedisClient.ZRevRank(ctx, Ex06RankKey, name).Result()
 	if err != nil {
 		fmt.Errorf("error getting name=%s, err=%v", name, err)
@@ -131,6 +133,7 @@ func GetUserRankByName(ctx context.Context, name string) {
 
 // GetUserScoreByName 获取用户分值
 func GetUserScoreByName(ctx context.Context, name string) {
+	// zscore ex06_rank_zset user2 // 获取user2的分数
 	score, err := RedisClient.ZScore(ctx, Ex06RankKey, name).Result()
 	if err != nil {
 		fmt.Errorf("error getting name=%s, err=%v", name, err)

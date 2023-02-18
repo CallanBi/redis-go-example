@@ -66,6 +66,7 @@ func ex03Work(ctx context.Context, cInstParam common.CInstParams) {
 		})
 		// sleep 模拟业务逻辑耗时
 		time.Sleep(50 * time.Millisecond)
+		// 限流后，需要将key的值减1
 		err = RedisClient.Decr(ctx, key).Err()
 		if err != nil {
 			panic(err)

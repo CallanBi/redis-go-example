@@ -62,6 +62,8 @@ func Ex05(ctx context.Context, args []string) {
 }
 
 func Ex06InitUserCounter(ctx context.Context) {
+	// 初始化用户计数器
+	// 一次需要设置多个key, 用pipeline批量操作，减少网络开销
 	pipe := RedisClient.Pipeline()
 	userCounters := []map[string]interface{}{
 		{"user_id": "1556564194374926", "got_digg_count": 10693, "got_view_count": 2238438, "followee_count": 176, "follower_count": 9895, "follow_collect_set_count": 0, "subscribe_tag_count": 95},
@@ -69,7 +71,7 @@ func Ex06InitUserCounter(ctx context.Context) {
 		{"user_id": "2222", "got_digg_count": 1238, "follower_count": 379},
 	}
 	for _, counter := range userCounters {
-		uid, err := strconv.ParseInt(counter["user_id"].(string), 10, 64)
+		uid, _ := strconv.ParseInt(counter["user_id"].(string), 10, 64)
 		key := GetUserCounterKey(uid)
 		rw, err := pipe.Del(ctx, key).Result()
 		if err != nil {
@@ -99,6 +101,7 @@ func GetUserCounterKey(userID int64) string {
 func GetUserCounter(ctx context.Context, userID int64) {
 	pipe := RedisClient.Pipeline()
 	GetUserCounterKey(userID)
+	// HGetAll(ctx context.Context, key string) *MapStringStringCmd // 获取hash中所有的field和value
 	pipe.HGetAll(ctx, GetUserCounterKey(userID))
 	cmders, err := pipe.Exec(ctx)
 	if err != nil {
@@ -145,6 +148,7 @@ func decrByUserField(ctx context.Context, userID int64, field string) {
 
 func change(ctx context.Context, userID int64, field string, incr int64) {
 	redisKey := GetUserCounterKey(userID)
+	// HGet(ctx context.Context, key, field string) *StringCmd // 获取hash中指定field的value， 不用全部获取
 	before, err := RedisClient.HGet(ctx, redisKey, field).Result()
 	if err != nil {
 		panic(err)

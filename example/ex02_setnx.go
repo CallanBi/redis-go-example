@@ -41,6 +41,7 @@ func Ex02(ctx context.Context) {
 func ex02Work(ctx context.Context, cInstParam common.CInstParams) {
 	routine := cInstParam.Routine
 	eventLogger := cInstParam.ConcurrentEventLogger
+	// 每个协程都要释放锁
 	defer ex02ReleaseLock(ctx, routine, eventLogger)
 	for {
 		// 1. 尝试获取锁
@@ -70,6 +71,7 @@ func ex02Work(ctx context.Context, cInstParam common.CInstParams) {
 	}
 }
 
+// 删除锁，解除内存占用
 func ex02ReleaseLock(ctx context.Context, routine int, eventLogger *common.ConcurrentEventLogger) {
 	routineMark, _ := RedisClient.Get(ctx, resourceKey).Result()
 	if strconv.FormatInt(int64(routine), 10) != routineMark {
